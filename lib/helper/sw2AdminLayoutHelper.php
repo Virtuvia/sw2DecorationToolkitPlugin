@@ -58,6 +58,9 @@ function Get_Array_Keys_UL($array = array()) {
   foreach($array as $key => $elem)
 
     if(is_array($elem) && !isset($elem['href'])) {
+      if (isset($elem['_plugin']) && !sfConfig::get(sprintf('app_%s_plugin_enabled', $elem['_plugin']), false)) {
+          continue;
+      }
       if(isset($elem['_permission'])) {
         if($sf_user->hasCredential($elem['_permission'])) {
           $out .= '<li>' . $key . $recursion($elem['_children']) . '</li>' . "\n";
